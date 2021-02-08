@@ -129,6 +129,7 @@ export default function Checkout() {
                   )}
                   <Button
                     variant="contained"
+                    size="large"
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
