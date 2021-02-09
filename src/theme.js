@@ -20,14 +20,22 @@ const theme = createMuiTheme({
   overrides: {
     MuiOutlinedInput: {
       notchedOutline: {
-        borderColor: "rgba(0,0,0,0.42)"
-      }
+        borderColor: "rgba(0,0,0,0.42)",
+        "input[readonly] + &": {
+          borderColor: "rgba(0,0,0,0.21)"
+        }
+      },
     },
     MuiFormHelperText: {
       contained: {
         fontSize: 14,
         marginLeft: undefined
       }
+    }
+  },
+  props: {
+    MuiStepConnector: {
+      "aria-hidden": true
     }
   }
 });

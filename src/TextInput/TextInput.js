@@ -6,7 +6,7 @@ import Done from "@material-ui/icons/Done"
 
 
 const TextInput = (props) => {
-  const { label, id, required, autoComplete, helperText, errorText, value, setValue } = props;
+  const { label, id, required, autoComplete, helperText, errorText, value, setValue, validationPattern, readOnly, numeric } = props;
 
   const [errorState, setErrorState] = useState(false);
   const [successState, setSuccessState] = useState(false);
@@ -33,13 +33,16 @@ const TextInput = (props) => {
   };
 
   const onBlur = () => {
-    if (value?.length > 0){
-      setErrorState(false);
-      setSuccessState(true);
+    if (value.length === 0) return;
+    if (validationPattern && !value.match(validationPattern)){
+      setErrorState(true);
+      setSuccessState(false);
       return;
     }
-    setErrorState(true);
-    setSuccessState(false);
+    if (validationPattern && value.match(validationPattern)) {
+      setErrorState(false);
+      setSuccessState(true);
+    }
   }
 
   const getIcon = () => {
@@ -67,18 +70,33 @@ const TextInput = (props) => {
       onBlur={onBlur}
       error={errorState}
       variant="outlined"
-      inputProps={{"aria-required": required}}
+      inputProps={{
+        "aria-required": required,
+        inputMode: numeric && "numeric",
+        pattern: numeric && "[0-9]*"
+      }}
       id={id}
       name={id}
       fullWidth
       autoComplete={autoComplete}
       helperText={errorState && errorText ? errorText : helperText}
       InputProps={{
-        endAdornment: getIcon()
+        endAdornment: getIcon(),
+        readOnly: readOnly
       }}
+      readOnly
     />
   </>
 };
+
+TextInput.defaultProps = {
+  autoComplete: "on",
+  helperText: "",
+  error: false,
+  errorText: "",
+  readOnly: false,
+  numeric: false
+}
 
 TextInput.propTypes = {
   label: PropTypes.string.isRequired,
@@ -87,7 +105,10 @@ TextInput.propTypes = {
   helperText: PropTypes.string,
   error: PropTypes.bool,
   errorText: PropTypes.string,
-  value: PropTypes.string.isRequired
+  value: PropTypes.string.isRequired,
+  validationPattern: PropTypes.string,
+  readOnly: PropTypes.bool,
+  numeric: PropTypes.bool
 };
 
 export default TextInput;

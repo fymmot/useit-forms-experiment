@@ -100,7 +100,7 @@ export default function Checkout() {
           <Typography component="h1" variant="h4" align="center">
             Checkout
           </Typography>
-          <Stepper activeStep={activeStep} className={classes.stepper} role="list">
+          <Stepper activeStep={activeStep} className={classes.stepper} role="list" aria-label="Your progress">
               {steps.map((label, index) => (
                   <Step key={label} role="listitem" aria-current={index === activeStep ? "step" : undefined}>
                     <StepLabel>{label}</StepLabel>
